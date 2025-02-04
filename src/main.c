@@ -7,9 +7,15 @@
 // pino do botão
 #define BUTTON_A_PIN 5
 
+// tempo em milissegundos para deboucing
+#define DEBOUNCE_TIME 50
+
 // variaveis para monitorar o estado do botão e do timer
 volatile bool button_pressed = false;
 volatile bool timer_running = false;
+
+// fazer o deboucing via software
+volatile uint32_t last_interrupt_time = 0;
 
 // variavel para controlar qual a rotina de leds utilizar
 volatile uint8_t state = 0;
@@ -41,10 +47,15 @@ int64_t oneshot_timer_callback(alarm_id_t id, void *user_data) {
 
 void button_callback(uint gpio, uint32_t events) {
 
-    // interrupção do botão so diz que o botão esta pressionado se o timer não estiver rodando
-    if (!timer_running) {
+    uint32_t current_time = to_ms_since_boot(get_absolute_time());
+
+    // aceita apenas se não tiver rolando o timer
+    // e faz o deboucing via software
+    if (!timer_running && (current_time - last_interrupt_time > DEBOUNCE_TIME)) {
         button_pressed = true;
     }
+
+    last_interrupt_time = current_time;
 }
 
 int main() {
@@ -84,7 +95,7 @@ int main() {
             );
         }
 
-        // Parte opcional para evitar o debouncing via software
-        sleep_ms(50);
+        // evitar a sobrecarga da CPU
+        sleep_ms(100);
     }
 }

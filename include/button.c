@@ -36,7 +36,7 @@ void button_init(uint8_t pin) {
     gpio_set_dir(pin, GPIO_IN);
     gpio_pull_up(pin);
 
-    // habilita interrupções para bordas de subida e descida
+    // habilita interrupções para bordas de subida
     gpio_set_irq_enabled_with_callback(
         pin,
         GPIO_IRQ_EDGE_FALL,

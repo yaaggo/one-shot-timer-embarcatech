@@ -6,6 +6,8 @@
 #include "include/led.h"
 #include "include/button.h"
 
+#define TIME_LED 3000
+
 // variavel para controlar qual a rotina de leds utilizar
 volatile uint8_t state = 0;
 
@@ -23,8 +25,6 @@ int64_t oneshot_timer_callback(alarm_id_t id, void *user_data) {
     led_state(LED_BLUE_PIN, leds[state][1]);
     led_state(LED_GREEN_PIN, leds[state][2]);
 
-    puts("passei pela oneshot");
-
     state++;
 
     if (state >= 4) {
@@ -32,7 +32,7 @@ int64_t oneshot_timer_callback(alarm_id_t id, void *user_data) {
         return 0;
     }
 
-    return 3000 * 1000;
+    return TIME_LED * 1000;
 } 
 
 
@@ -49,10 +49,8 @@ int main() {
     button_init(BUTTON_B_PIN);
 
     while (1) {
-        puts("nao entrei no if");
         // se o botao foi pressionado e o tempo não estava em execução
         if (button_pressed && !timer_running) {
-            puts("entrei no if");
             button_pressed = false; // altera o botao para não pressionado
             timer_running = true;   // altera o timer para ativo
             state = 0;              // define o estado da rotina de leds para 0

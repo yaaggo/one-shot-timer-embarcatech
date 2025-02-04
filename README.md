@@ -56,13 +56,6 @@ Foi realizado um teste com a ferramenta educacional BitDogLab, utilizando um LED
    - Envie o binário gerado para a placa.
 
 5) **Executar o código**:
-   - Observe os LEDs alternando a cada 3 segundos.
-   - Acompanhe as mensagens no console serial.
-
+   - Pressione o botão.
+   - Observe os LEDs ligando e se desligando um após o outro a cada 3 segundos.
 ---
-
-## Observações
-
-- Este projeto demonstra o uso de temporizadores periódicos na Raspberry Pi Pico.
-- `add_repeating_timer_ms()` facilita a execução de funções em intervalos regulares.
-- O loop principal garante que o programa continue rodando enquanto o temporizador gerencia os LEDs.
